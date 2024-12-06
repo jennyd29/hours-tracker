@@ -37,10 +37,13 @@ def summarise_hours(file_path):
         df['date'] = pd.to_datetime(df['date'], dayfirst = True)
         df['hrs_worked'] = df['end'] - df['breaks'] - df['start']
         df['weekday'] = df['date'].dt.day_name()
+        
         expected_hrs = pd.read_csv('expected.csv')
+        
         df_joined = df.merge(expected_hrs, how = 'left', on = 'weekday')
         df_joined['difference'] = df_joined['hrs_worked'] - df_joined['expected_hours']
         total_over_under = df_joined['difference'].sum()
+        
         return print(total_over_under)
     
 if __name__ == "__main__":
